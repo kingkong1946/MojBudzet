@@ -2,8 +2,14 @@
 {
     using System;
 
+    /// <summary>
+    /// Add new empty monthly budget command.
+    /// </summary>
     public class AddMonthlyBudgetCommand
     {
-        public DateTime Month { get; private set; }
+        /// <summary>
+        /// Gets or sets budget month.
+        /// </summary>
+        public DateTime Month { get; set; }
     }
 }
