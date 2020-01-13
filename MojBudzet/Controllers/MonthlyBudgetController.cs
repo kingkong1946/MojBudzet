@@ -22,17 +22,23 @@
             this.budgetService = budgetService;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(string id)
+        {
+            return this.Ok();
+        }
+
         /// <summary>
         /// Create new monthly budget.
         /// </summary>
         /// <param name="command">Request body</param>
-        /// <returns>Operaton result</returns>
+        /// <returns>Operaton result.</returns>
         [HttpPost]
         public async Task<IActionResult> Post(AddMonthlyBudgetCommand command)
         {
             var result = await this.budgetService.AddMonthlyBudgetAsync(command);
 
-            var resourcePath = this.Url.Action("Get", "MonthlyBudget");
+            var resourcePath = this.Url.Action("Get", "MonthlyBudget", new { id = result });
 
             return this.Created(resourcePath, result);
         }

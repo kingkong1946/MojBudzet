@@ -8,6 +8,7 @@
     using Microsoft.Extensions.Logging;
     using MojBudzet.BussinessLayer.Domain;
     using MojBudzet.BussinessLayer.Domain.Budget;
+    using MojBudzet.BussinessLayer.Domain.Exception;
 
     /// <summary>
     /// LiteDB monthly budget repository.
@@ -33,19 +34,33 @@
         {
             this.logger.LogInformation($"Persiste monthly budget was started. ID: {item.Id}");
 
-            var document = new MonthlyBudgetDocument
-            {
-                Id = item.Id,
-                Expenses = item.GetExpenses().Select(expense => new ExpenseDocument
+            var expenses = item
+                .GetExpenses()
+                .Select(expense => new ExpenseDocument
                 {
                     Name = expense.Name,
                     Value = expense.Value,
-                }).ToList(),
+                })
+                .ToList();
+
+            var document = new MonthlyBudgetDocument
+            {
+                Id = item.Id,
+                Expenses = expenses,
                 Month = item.Month,
             };
+
             this.logger.LogInformation($"Monthly budget document was created. ID: {item.Id}");
 
-            this.database.GetCollection<MonthlyBudgetDocument>().Insert(document);
+            try
+            {
+                this.database.GetCollection<MonthlyBudgetDocument>().Insert(document);
+            }
+            catch (LiteException)
+            {
+                throw new MonthlyBudgetExistsException("The monthly budget already exists", document.Id);
+            }
+
             this.logger.LogInformation($"Monthly budget document was inserted. ID: {item.Id}");
 
             return Task.CompletedTask;
