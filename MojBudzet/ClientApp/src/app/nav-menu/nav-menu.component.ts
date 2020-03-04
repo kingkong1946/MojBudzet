@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { pagesConfig } from './models/router-config'
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,6 +8,11 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  pagesConfig: Array<any>;
+
+  constructor() {
+    this.pagesConfig = pagesConfig
+  }
 
   collapse() {
     this.isExpanded = false;
