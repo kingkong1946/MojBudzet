@@ -1,1 +1,21 @@
-<form></form>
+<form (ngSubmit)="onSubmit(date)" #createForm="ngForm">
+  <div class="form-group">
+    <label for="date">Data</label>
+    <input class="form-control" placeholder="mm/yy" id="date" required
+           bsDatepicker
+           [(ngModel)]="model.date" name="date" #date="ngModel"
+           [bsConfig]="bsConfig" />
+
+    <div class="alert alert-danger"
+         *ngIf="date.invalid && (date.dirty || date.touched)">
+      <div *ngIf="date.errors.required">
+        Date is required.
+      </div>
+      <div *ngIf="date.errors.bsDate && date.errors.bsDate.invalid">
+        Invalid format date.
+      </div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-success" [disabled]="!createForm.form.valid">Create</button>
+</form>
