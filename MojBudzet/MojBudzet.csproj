@@ -37,7 +37,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\monthly-budged\" />
     <Folder Include="ClientApp\src\app\nav-menu\models\" />
   </ItemGroup>
 

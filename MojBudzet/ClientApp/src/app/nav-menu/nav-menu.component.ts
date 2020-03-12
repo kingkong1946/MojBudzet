@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { pagesConfig } from './models/router-config'
+import { pagesConfig } from './pages-config';
 
 @Component({
   selector: 'app-nav-menu',
