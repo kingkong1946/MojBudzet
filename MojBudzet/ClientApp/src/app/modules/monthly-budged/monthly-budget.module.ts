@@ -2,10 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BsDatepickerModule } from 'ngx-bootstrap';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { plLocale } from 'ngx-bootstrap/locale';
 
 import { MonthlyBudgetRoutingModule } from './monthly-budget-routing.module';
 import { MonthlyBudgetComponent } from './monthly-budget.component';
 import { CreateComponent } from './components/create/create.component';
+
+defineLocale('pl', plLocale);
 
 @NgModule({
   declarations: [MonthlyBudgetComponent, CreateComponent],

@@ -1,3 +1,5 @@
 export class MonthlyBudget {
-  public date: Date;
+  constructor(
+    public month: Date = null
+  ) { }
 }

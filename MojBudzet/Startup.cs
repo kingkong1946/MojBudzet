@@ -1,5 +1,7 @@
 namespace MojBudzet
 {
+    using System.IO;
+    using System.Threading.Tasks;
     using LiteDB;
     using Microsoft.AspNetCore.Builder;
     using Microsoft.AspNetCore.Diagnostics;
@@ -9,12 +11,12 @@ namespace MojBudzet
     using Microsoft.Extensions.Configuration;
     using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
+    using Microsoft.OpenApi.Models;
     using MojBudzet.BussinessLayer.Application.Budget;
     using MojBudzet.BussinessLayer.Domain.Budget;
     using MojBudzet.BussinessLayer.Domain.Exception;
     using MojBudzet.BussinessLayer.Infrastructure.Budget;
     using Newtonsoft.Json;
-    using System.Threading.Tasks;
 
     /// <summary>
     /// Startup application class.
@@ -50,10 +52,15 @@ namespace MojBudzet
 
             services.AddLogging();
 
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
+
             services.AddTransient<BudgetService, BudgetLocalService>();
             services.AddSingleton<MonthlyBudgetFactory>();
             services.AddSingleton<Repository<MonthlyBudgetAggregate>, LiteDbMonthlyBudgetRepository>();
-            services.AddSingleton(new LiteDatabase("database.db"));
+            services.AddSingleton(new LiteDatabase(new MemoryStream()));
 
             //services.AddSingleton<ExceptionMiddleware>();
         }
@@ -65,6 +72,13 @@ namespace MojBudzet
         /// <param name="env">Application enviroment information.</param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

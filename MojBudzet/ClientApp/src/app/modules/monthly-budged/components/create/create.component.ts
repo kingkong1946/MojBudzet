@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { BsDatepickerConfig } from 'ngx-bootstrap';
+import { BsLocaleService } from 'ngx-bootstrap/datepicker';
 import { MonthlyBudget } from './monthly-budget';
+import { MonthlyBudgetService } from '../../monthly-budget.service';
 
 @Component({
   selector: 'app-create',
@@ -13,15 +15,22 @@ export class CreateComponent implements OnInit {
     minMode: 'month'
   }
 
-  model: MonthlyBudget = new MonthlyBudget()
+  model: MonthlyBudget = new MonthlyBudget(new Date());
 
-  constructor() { }
+  constructor(
+    private monthlyBudgetService: MonthlyBudgetService,
+    private localeService: BsLocaleService
+  ) { }
 
   ngOnInit(): void {
+    this.localeService.use('pl');
   }
 
-  onSubmit(date) {
-    console.log(date);
+  onSubmit() {
+    this.monthlyBudgetService.create(this.model)
+      .subscribe(response => console.log(response));
   }
+
+  diag(obj) { return null; }
 
 }

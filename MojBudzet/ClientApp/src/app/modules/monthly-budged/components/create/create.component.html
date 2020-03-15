@@ -1,21 +1,25 @@
 <form (ngSubmit)="onSubmit(date)" #createForm="ngForm">
   <div class="form-group">
-    <label for="date">Data</label>
-    <input class="form-control" placeholder="mm/yy" id="date" required
-           bsDatepicker
-           [(ngModel)]="model.date" name="date" #date="ngModel"
-           [bsConfig]="bsConfig" />
+    <label for="date">Miesiąc budżetu</label>
+    <!--<input type="text" id="date" required value="model.date"
+           [(ngModel)]="model.date" name="date" #date="ngModel" />-->
 
-    <div class="alert alert-danger"
+    <bs-datepicker-inline class="form-control-file"
+                          [(ngModel)]="model.month"
+                          [(bsValue)]="model.month"
+                          (bsValueChange)="diag(date)"
+                          [bsConfig]="bsConfig"></bs-datepicker-inline>
+
+    <!--<div class="alert alert-danger"
          *ngIf="date.invalid && (date.dirty || date.touched)">
       <div *ngIf="date.errors.required">
-        Date is required.
+        Miesiąc budżetu jest wymagany.
       </div>
       <div *ngIf="date.errors.bsDate && date.errors.bsDate.invalid">
-        Invalid format date.
+        Nieprawidłowy format daty.
       </div>
-    </div>
+    </div>-->
   </div>
 
-  <button type="submit" class="btn btn-success" [disabled]="!createForm.form.valid">Create</button>
+  <button type="submit" class="btn btn-success" [disabled]="!createForm.form.valid">Stwórz</button>
 </form>
